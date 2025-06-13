@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KitapTakipMauii.Pages.BookAddPage"
+             Title="Kitap Ekle">
+    <StackLayout Padding="20">
+        <Entry Text="{Binding Title}" Placeholder="Kitap Başlığı"/>
+        <Entry Text="{Binding Author}" Placeholder="Yazar"/>
+        <Entry Text="{Binding Genre}" Placeholder="Tür"/>
+        <Entry Text="{Binding Notes}" Placeholder="Notlar"/>
+        <DatePicker Date="{Binding StartDate}" Format="dd/MM/yyyy" MinimumDate="01/01/2000" MaximumDate="12/31/2025"/>
+        <DatePicker Date="{Binding EndDate}" Format="dd/MM/yyyy" MinimumDate="01/01/2000" MaximumDate="12/31/2025"/>
+        <Button Text="Kaydet" Command="{Binding SaveBookCommand}"/>
+        <Button Text="İptal" Command="{Binding CancelCommand}"/>
+    </StackLayout>
+</ContentPage>

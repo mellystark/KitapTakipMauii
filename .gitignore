@@ -1,0 +1,47 @@
+# Build outputs
+bin/
+obj/
+**/bin/
+**/obj/
+
+# User-specific files
+.vs/
+*.user
+*.suo
+*.userprefs
+
+# Xamarin/MAUI cache
+*.apk
+*.aab
+*.ap_
+*.zip
+*.dex
+*.class
+*.jar
+
+# macOS generated files
+.DS_Store
+
+# Windows thumbnail cache
+Thumbs.db
+
+# Rider / VS Code
+.idea/
+.vscode/
+
+# Logs
+*.log
+
+# NuGet
+*.nupkg
+packages/
+project.lock.json
+*.nuget.props
+*.nuget.targets
+
+# Secrets
+appsettings.Development.json
+secrets.json
+
+# Other
+*.sqlite

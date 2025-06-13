@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KitapTakipMauii.Pages.LoginPage"
+             Title="Giriş">
+    <StackLayout Padding="20" VerticalOptions="Center">
+        <Label Text="Kitap Takip Uygulamasına Hoş Geldiniz" FontSize="24" HorizontalOptions="Center" Margin="0,0,0,20"/>
+        <Entry Text="{Binding UserNameOrEmail}" Placeholder="Kullanıcı Adı veya E-posta"/>
+        <Entry Text="{Binding Password}" Placeholder="Şifre" IsPassword="True"/>
+        <Picker Title="Giriş Türü"
+                ItemsSource="{Binding LoginTypes}"
+                SelectedItem="{Binding SelectedLoginType}"/>
+        <Button Text="Giriş Yap" Command="{Binding LoginCommand}"/>
+        <Button Text="Kayıt Ol" Command="{Binding NavigateToRegisterCommand}"/>
+    </StackLayout>
+</ContentPage>

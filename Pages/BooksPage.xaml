@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KitapTakipMauii.Pages.BooksPage"
+             Title="Kitaplar">
+    <StackLayout Padding="10">
+        <!-- Yükleme göstergesi -->
+        <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="Blue" />
+
+        <!-- Tür filtresi -->
+        <Picker x:Name="GenrePicker"
+                Title="Tür Filtresi"
+                ItemsSource="{Binding Genres}"
+                SelectedItem="{Binding SelectedGenre}"
+                SelectedIndexChanged="GenrePicker_SelectedIndexChanged" />
+
+        <!-- Yazar filtresi -->
+        <Picker x:Name="AuthorPicker"
+                Title="Yazar Filtresi"
+                ItemsSource="{Binding Authors}"
+                SelectedItem="{Binding SelectedAuthor}"
+                SelectedIndexChanged="AuthorPicker_SelectedIndexChanged" />
+
+        <!-- Başlık ara -->
+        <Entry Text="{Binding SearchTitle}" 
+               Placeholder="Başlık Ara" 
+               TextChanged="SearchTitle_TextChanged" />
+
+        <!-- Kitaplar listesi -->
+        <CollectionView ItemsSource="{Binding Books}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Padding="10">
+                        <Label Text="{Binding Title}" FontSize="18" FontAttributes="Bold" />
+                        <Label Text="{Binding Author}" FontSize="14" />
+                        <Label Text="{Binding Genre}" FontSize="14" />
+                        <Label Text="{Binding StartDate, StringFormat='Başlangıç: {0:dd/MM/yyyy}'}" />
+                        <Label Text="{Binding EndDate, StringFormat='Bitiş: {0:dd/MM/yyyy}'}" />
+                        <Button Text="Düzenle"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EditBookCommand}"
+                                CommandParameter="{Binding .}" />
+                        <Button Text="Sil"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteBookCommand}"
+                                CommandParameter="{Binding .}" />
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Alt butonlar -->
+        <Button Text="Yeni Kitap Ekle" Command="{Binding AddBookCommand}" />
+        <Button Text="Çıkış Yap" Command="{Binding LogoutCommand}" />
+    </StackLayout>
+</ContentPage>
