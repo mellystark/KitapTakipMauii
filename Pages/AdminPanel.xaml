@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:KitapTakipMauii.ViewModels"
+             x:Class="KitapTakipMauii.Pages.AdminPanel"
+             x:Name="AdminPaneli"
+             Title="Admin Paneli">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Çıkış Yap" Command="{Binding LogoutCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <StackLayout Padding="20">
+        <Label Text="Admin Paneli" FontSize="24" HorizontalOptions="Center" Margin="0,0,0,20" />
+
+        <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+            <RadioButton Content="Kullanıcılar" GroupName="ListType" IsChecked="{Binding IsUsersSelected}" />
+            <RadioButton Content="Kitaplar" GroupName="ListType" IsChecked="{Binding IsBooksSelected}" />
+        </HorizontalStackLayout>
+
+        <CollectionView ItemsSource="{Binding CurrentItems}" Margin="0,20,0,0">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10" Margin="5" ColumnDefinitions="2*,2*,Auto" RowDefinitions="Auto" BackgroundColor="#f2f2f2" >
+                        <Label Text="{Binding Title}" Grid.Column="0" VerticalOptions="Center" FontAttributes="Bold"/>
+                        <Label Text="{Binding SubTitle}" Grid.Column="1" VerticalOptions="Center"/>
+                        <Button Text="Sil" 
+                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:AdminPanelViewModel}}, Path=DeleteItemCommand}"
+                        CommandParameter="{Binding}" 
+                        BackgroundColor="Red" 
+                        TextColor="White"
+                        Grid.Column="2"
+                        WidthRequest="60"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>

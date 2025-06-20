@@ -54,8 +54,17 @@ public partial class LoginViewModel : ObservableObject
 
             if (response.Success)
             {
-                // DÜZELTİLEN ROUTE
-                await Shell.Current.GoToAsync("//MainTabs/BooksPage");
+                // ROLE GÖRE YÖNLENDİRME
+                if (SelectedLoginType == "Admin")
+                {
+                    // ADMIN PANEL YÖNLENDİRME
+                    await Shell.Current.GoToAsync("AdminPanel");
+                }
+                else
+                {
+                    // Kullanıcı → BooksPage (senin mevcut route)
+                    await Shell.Current.GoToAsync("//MainTabs/BooksPage");
+                }
             }
             else
             {
@@ -68,6 +77,7 @@ public partial class LoginViewModel : ObservableObject
             Console.WriteLine("Login Hatası: " + ex);
         }
     }
+
 
     [RelayCommand]
     private async Task NavigateToRegisterAsync()

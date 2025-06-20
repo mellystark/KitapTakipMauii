@@ -44,6 +44,8 @@ public static class MauiProgram
         builder.Services.AddTransient<Pages.AddBookPage>();
         builder.Services.AddTransient<Pages.EditBookPage>();
         builder.Services.AddTransient<Pages.UserBookDetailPage>();
+        builder.Services.AddTransient<AdminPanelViewModel>();
+        builder.Services.AddTransient<AdminPanel>();
         builder.Services.AddTransient<MyBooksPage>();
 
 #if DEBUG

@@ -37,4 +37,8 @@
             editbookpage?id={id}
         </ShellContent.Route>
     </ShellContent>
+
+
+    <ShellContent Route="AdminPanel"
+              ContentTemplate="{DataTemplate pages:AdminPanel}" />
 </Shell>
