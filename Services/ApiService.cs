@@ -94,6 +94,44 @@ public class ApiService
         return await _httpClient.GetFromJsonAsync<ApiResponse<BookDto>>($"books/{id}");
     }
 
+    public async Task<ApiResponse<List<BookDto>>> GetUserBooksAsync()
+    {
+        var token = await GetTokenAsync();
+        if (string.IsNullOrEmpty(token))
+        {
+            return new ApiResponse<List<BookDto>>
+            {
+                Success = false,
+                Message = "Oturum açılmamış. Lütfen giriş yapın.",
+                Data = null
+            };
+        }
+        await SetTokenAsync(token);
+        try
+        {
+            var response = await _httpClient.GetAsync("books");
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return new ApiResponse<List<BookDto>>
+                {
+                    Success = false,
+                    Message = "Yetkisiz erişim: Geçersiz veya eksik token.",
+                    Data = null
+                };
+            }
+            return await response.Content.ReadFromJsonAsync<ApiResponse<List<BookDto>>>();
+        }
+        catch (Exception ex)
+        {
+            return new ApiResponse<List<BookDto>>
+            {
+                Success = false,
+                Message = $"Kitaplar getirilirken hata: {ex.Message}",
+                Data = null
+            };
+        }
+    }
+
     public async Task<ApiResponse<List<BookDto>>> GetBooksByAuthorNameAsync(string authorName)
     {
         return await _httpClient.GetFromJsonAsync<ApiResponse<List<BookDto>>>("books/by-author?authorName=" + Uri.EscapeDataString(authorName));
@@ -111,8 +149,59 @@ public class ApiService
 
     public async Task<ApiResponse<BookDto>> AddBookAsync(BookCreateDto bookDto)
     {
+        var token = await GetTokenAsync();
+        if (string.IsNullOrEmpty(token))
+        {
+            return new ApiResponse<BookDto>
+            {
+                Success = false,
+                Message = "Oturum açılmamış. Lütfen giriş yapın.",
+                Data = null
+            };
+        }
+
+        // Token'ı yeniden ekle (güvenli olması için)
+        await SetTokenAsync(token);
+
         var response = await _httpClient.PostAsJsonAsync("books", bookDto);
+        if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        {
+            return new ApiResponse<BookDto>
+            {
+                Success = false,
+                Message = "Yetkisiz erişim: Geçersiz veya eksik token.",
+                Data = null
+            };
+        }
+
         return await response.Content.ReadFromJsonAsync<ApiResponse<BookDto>>();
+    }
+
+    public async Task<ApiResponse<List<BookDto>>> GetAllBooksAsync() // Yeni eklenen metod
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync("books/all");
+            if (!response.IsSuccessStatusCode)
+            {
+                return new ApiResponse<List<BookDto>>
+                {
+                    Success = false,
+                    Message = $"İstek başarısız: {response.ReasonPhrase}",
+                    Data = null
+                };
+            }
+            return await response.Content.ReadFromJsonAsync<ApiResponse<List<BookDto>>>() ?? new ApiResponse<List<BookDto>> { Success = false, Message = "Veri alınamadı", Data = null };
+        }
+        catch (Exception ex)
+        {
+            return new ApiResponse<List<BookDto>>
+            {
+                Success = false,
+                Message = $"Tüm kitaplar getirilirken hata: {ex.Message}",
+                Data = null
+            };
+        }
     }
 
     public async Task<ApiResponse<BookDto>> UpdateBookAsync(int id, BookUpdateDto bookDto)

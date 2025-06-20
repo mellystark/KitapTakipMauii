@@ -2,9 +2,9 @@ using KitapTakipMauii.ViewModels;
 
 namespace KitapTakipMauii.Pages;
 
-public partial class BookAddPage : ContentPage
+public partial class BookDetailPage : ContentPage
 {
-    public BookAddPage(BookAddViewModel viewModel)
+    public BookDetailPage(BookDetailViewModel viewModel)
     {
         InitializeComponent();
         BindingContext = viewModel;

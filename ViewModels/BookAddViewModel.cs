@@ -26,6 +26,12 @@ public partial class BookAddViewModel : ObservableObject
     private string notes;
 
     [ObservableProperty]
+    private string? description;
+
+    [ObservableProperty]
+    private int? pageCount;
+
+    [ObservableProperty]
     private DateTime startDate = DateTime.Today;
 
     [ObservableProperty]
@@ -50,6 +56,8 @@ public partial class BookAddViewModel : ObservableObject
             Author = value.Author;
             Genre = value.Genre;
             Notes = value.Notes;
+            Description = value.Description;
+            PageCount = value.PageCount;
             StartDate = value.StartDate ?? DateTime.Today;
             EndDate = value.EndDate ?? DateTime.Today;
             _isEditing = true;
@@ -67,7 +75,10 @@ public partial class BookAddViewModel : ObservableObject
                 Title = Title,
                 Author = Author,
                 Genre = Genre,
-                Notes = Notes
+                Notes = Notes,
+                PageCount = PageCount,
+                Description = Description,
+                CoverImage = "",
             };
             var response = await _apiService.UpdateBookAsync(Id, bookUpdateDto);
             if (response.Success)
@@ -86,7 +97,10 @@ public partial class BookAddViewModel : ObservableObject
                 Title = Title,
                 Author = Author,
                 Genre = Genre,
-                Notes = Notes
+                PageCount = PageCount,
+                Notes = Notes,
+                Description = Description,
+                CoverImage = "",
             };
             var response = await _apiService.AddBookAsync(bookCreateDto);
             if (response.Success)

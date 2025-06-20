@@ -1,0 +1,15 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KitapTakipMauii.Pages.AddBookPage"
+             Title="Yeni Kitap Ekle">
+
+    <VerticalStackLayout Padding="20" Spacing="15">
+        <Entry x:Name="TitleEntry" Placeholder="Kitap Başlığı" />
+        <Entry x:Name="AuthorEntry" Placeholder="Yazar" />
+        <Entry x:Name="PageCountEntry" Placeholder="Sayfa Sayısı" Keyboard="Numeric" />
+        <Entry x:Name="DescriptionEntry" Placeholder="Açıklama" />
+        <Entry x:Name="GenreEntry" Placeholder="Tür" />
+        <Entry x:Name="ImageUrlEntry" Placeholder="Kapak Resmi URL" />
+        <Button Text="Kaydet" Clicked="OnSaveClicked" />
+    </VerticalStackLayout>
+</ContentPage>

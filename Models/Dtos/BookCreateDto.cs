@@ -23,5 +23,8 @@ namespace KitapTakipMauii.Models.Dtos
 
         [StringLength(500, ErrorMessage = "Notlar 500 karakterden uzun olamaz.")]
         public string? Notes { get; set; }
+        public string? Description { get; set; }
+        public int? PageCount { get; set; }
+        public string CoverImage { get; set; }
     }
 }

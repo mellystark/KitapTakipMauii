@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using KitapTakipMauii.Services;
 using KitapTakipMauii.ViewModels;
+using KitapTakipMauii.Pages;
 
 namespace KitapTakipMauii;
 
@@ -26,15 +27,24 @@ public static class MauiProgram
         builder.Services.AddTransient<LoginViewModel>();
         builder.Services.AddTransient<RegisterViewModel>();
         builder.Services.AddTransient<BooksViewModel>();
+        builder.Services.AddTransient<EditBookViewModel>();
         builder.Services.AddTransient<BookAddViewModel>();
         builder.Services.AddTransient<ProfileViewModel>();
+        builder.Services.AddTransient<BooksPageViewModel>();
+        builder.Services.AddTransient<BookDetailViewModel>();
+        builder.Services.AddTransient<MyBooksPageViewModel>();
+        builder.Services.AddTransient<UserBookDetailViewModel>();
 
         // Page kayıtları
         builder.Services.AddTransient<Pages.LoginPage>();
         builder.Services.AddTransient<Pages.RegisterPage>();
         builder.Services.AddTransient<Pages.BooksPage>();
-        builder.Services.AddTransient<Pages.BookAddPage>();
         builder.Services.AddTransient<Pages.ProfilePage>();
+        builder.Services.AddTransient<Pages.BookDetailPage>();
+        builder.Services.AddTransient<Pages.AddBookPage>();
+        builder.Services.AddTransient<Pages.EditBookPage>();
+        builder.Services.AddTransient<Pages.UserBookDetailPage>();
+        builder.Services.AddTransient<MyBooksPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();

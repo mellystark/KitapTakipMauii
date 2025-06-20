@@ -8,6 +8,13 @@
     <ShellContent Route="LoginPage"
                   ContentTemplate="{DataTemplate pages:LoginPage}" />
 
+
+    <ShellContent Route="AddBookPage" ContentTemplate="{DataTemplate pages:AddBookPage}" />
+    <ShellContent Route="userbookdetail/{id}"
+              ContentTemplate="{DataTemplate pages:UserBookDetailPage}" />
+
+
+
     <!-- Kayıt Sayfası -->
     <ShellContent Route="RegisterPage"
                   ContentTemplate="{DataTemplate pages:RegisterPage}" />
@@ -15,10 +22,19 @@
     <!-- Ana Sekmeli Alan -->
     <TabBar Route="MainTabs">
         <ShellContent Title="Kitaplar"
-                      Route="BooksPage"
-                      ContentTemplate="{DataTemplate pages:BooksPage}" />
+                  Route="BooksPage"
+                  ContentTemplate="{DataTemplate pages:BooksPage}" />
+        <ShellContent Title="Kitaplarım"
+                  Route="MyBooksPage"
+                  ContentTemplate="{DataTemplate pages:MyBooksPage}" />
         <ShellContent Title="Profil"
-                      Route="ProfilePage"
-                      ContentTemplate="{DataTemplate pages:ProfilePage}" />
+                  Route="ProfilePage"
+                  ContentTemplate="{DataTemplate pages:ProfilePage}" />
     </TabBar>
+
+    <ShellContent ContentTemplate="{DataTemplate pages:EditBookPage}">
+        <ShellContent.Route>
+            editbookpage?id={id}
+        </ShellContent.Route>
+    </ShellContent>
 </Shell>

@@ -2,14 +2,23 @@ using KitapTakipMauii.ViewModels;
 
 namespace KitapTakipMauii.Pages;
 
-public partial class BooksPage : ContentPage
+public partial class MyBooksPage : ContentPage
 {
-    private readonly BooksPageViewModel _viewModel;
+    private readonly MyBooksPageViewModel _viewModel;
 
-    public BooksPage(BooksPageViewModel viewModel)
+    public MyBooksPage(MyBooksPageViewModel viewModel)
     {
         InitializeComponent();
         BindingContext = _viewModel = viewModel;
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        if (BindingContext is MyBooksPageViewModel viewModel)
+        {
+            await viewModel.LoadUserBooksAsync();
+        }
     }
 
     private async void GenreEntry_TextChanged(object sender, TextChangedEventArgs e)
@@ -25,14 +34,5 @@ public partial class BooksPage : ContentPage
     private async void SearchTitle_TextChanged(object sender, TextChangedEventArgs e)
     {
         await _viewModel.SearchByTitleAsync();
-    }
-
-    protected override async void OnAppearing()
-    {
-        base.OnAppearing();
-        if (BindingContext is BooksPageViewModel viewModel)
-        {
-            await viewModel.RefreshAsync();
-        }
     }
 }
