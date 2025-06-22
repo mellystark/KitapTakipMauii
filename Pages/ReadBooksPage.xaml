@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KitapTakipMauii.Pages.ReadBooksPage"
+             Title="Okuduklarım"
+             BackgroundColor="#F5F5F5">
+    <Grid RowSpacing="10" Padding="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Arama Çubuğu -->
+        <Frame Grid.Row="0"
+               CornerRadius="10"
+               Padding="10"
+               BackgroundColor="White"
+               HasShadow="True">
+            <Entry Placeholder="Kitap ara..."
+                   Text="{Binding SearchText}"
+                   TextChanged="OnSearchTextChanged"
+                   FontSize="16"
+                   ClearButtonVisibility="WhileEditing" />
+        </Frame>
+
+        <!-- Kitap Listesi -->
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding Books}"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedBook, Mode=TwoWay}"
+                        SelectionChangedCommand="{Binding BookSelectedCommand}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Margin="0,5"
+                           CornerRadius="10"
+                           Padding="10"
+                           BackgroundColor="White"
+                           HasShadow="True">
+                        <Grid ColumnDefinitions="Auto,*,Auto"
+                              RowDefinitions="Auto,Auto">
+                            <!-- Kitap Kapağı -->
+                            <Image Grid.Row="0"
+                                   Grid.RowSpan="2"
+                                   Source="{Binding CoverImage}"
+                                   HeightRequest="80"
+                                   WidthRequest="60"
+                                   Aspect="AspectFill"
+                                   Margin="0,0,10,0" />
+
+                            <!-- Kitap Başlığı -->
+                            <Label Grid.Row="0"
+                                   Grid.Column="1"
+                                   Text="{Binding Title}"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#333333"
+                                   LineBreakMode="TailTruncation" />
+
+                            <!-- Yazar -->
+                            <Label Grid.Row="1"
+                                   Grid.Column="1"
+                                   Text="{Binding Author}"
+                                   FontSize="14"
+                                   TextColor="#666666"
+                                   LineBreakMode="TailTruncation" />
+
+                            <!-- Sağ Ok -->
+                            <Label Grid.Row="0"
+                                   Grid.RowSpan="2"
+                                   Grid.Column="2"
+                                   Text="❯"
+                                   FontSize="24"
+                                   TextColor="#512BD4"
+                                   VerticalOptions="Center"
+                                   Margin="10,0,0,0" />
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Yükleniyor Göstergesi -->
+        <ActivityIndicator Grid.Row="1"
+                           IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           Color="#512BD4"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center" />
+    </Grid>
+</ContentPage>

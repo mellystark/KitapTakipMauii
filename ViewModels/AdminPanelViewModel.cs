@@ -86,7 +86,9 @@ public partial class AdminPanelViewModel : ObservableObject
                     Id = book.Id.ToString(),
                     Title = book.Title,
                     SubTitle = book.Author,
-                    IsUser = false
+                    IsUser = false,
+                    CreatedDate = book.CreatedDate,
+                    UpdatedDate = book.UpdatedDate
                 });
             }
         }

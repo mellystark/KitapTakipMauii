@@ -27,6 +27,9 @@
         <ShellContent Title="Kitaplarım"
                   Route="MyBooksPage"
                   ContentTemplate="{DataTemplate pages:MyBooksPage}" />
+        <ShellContent Title="Okuduklarım"
+                      Route="ReadBooksPage"
+                      ContentTemplate="{DataTemplate pages:ReadBooksPage}" />
         <ShellContent Title="Profil"
                   Route="ProfilePage"
                   ContentTemplate="{DataTemplate pages:ProfilePage}" />

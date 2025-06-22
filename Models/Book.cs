@@ -40,5 +40,6 @@ namespace KitapTakipMauii.Models
 
         // Navigation property for EF Core
         public User User { get; set; } = null!;
+        public bool IsReading { get; set; }
     }
 }

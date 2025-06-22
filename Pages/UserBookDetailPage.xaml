@@ -12,7 +12,10 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <!-- For buttons -->
+                <RowDefinition Height="Auto" />
+                <!-- For description -->
             </Grid.RowDefinitions>
 
             <!-- Kitap Kapağı -->
@@ -51,8 +54,15 @@
                    TextColor="#666666"
                    HorizontalOptions="Center" />
 
+            <!-- Eklenme Tarihi -->
+            <Label Grid.Row="4"
+                   Text="{Binding Book.CreatedDate, StringFormat='Eklenme Tarihi: {0:dd/MM/yyyy HH\\:mm}'}"
+                   FontSize="18"
+                   TextColor="#666666"
+                   HorizontalOptions="Center" />
+
             <!-- Butonlar -->
-            <HorizontalStackLayout Grid.Row="4"
+            <HorizontalStackLayout Grid.Row="5"
                                    Spacing="10"
                                    HorizontalOptions="Center">
                 <Button Text="Geri"
@@ -82,7 +92,7 @@
             </HorizontalStackLayout>
 
             <!-- Açıklama -->
-            <Frame Grid.Row="5"
+            <Frame Grid.Row="6"
                    Padding="10"
                    CornerRadius="5"
                    BackgroundColor="White"

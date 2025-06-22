@@ -31,6 +31,7 @@ public class ApiService
     {
         _httpClient.DefaultRequestHeaders.Authorization = null;
         SecureStorage.Remove("jwt_token");
+        SecureStorage.Remove("username");
     }
 
     public async Task<ApiResponse<string>> RegisterAsync(RegisterDto registerDto)
@@ -46,6 +47,7 @@ public class ApiService
         if (result.Success)
         {
             await SetTokenAsync(result.Data);
+            await SecureStorage.SetAsync("username", loginDto.UserNameOrEmail); // Store username
         }
         return result;
     }
@@ -57,6 +59,7 @@ public class ApiService
         if (result.Success)
         {
             await SetTokenAsync(result.Data);
+            await SecureStorage.SetAsync("username", loginDto.UserNameOrEmail); // Store username
         }
         return result;
     }
@@ -160,7 +163,6 @@ public class ApiService
             };
         }
 
-        // Token'ı yeniden ekle (güvenli olması için)
         await SetTokenAsync(token);
 
         var response = await _httpClient.PostAsJsonAsync("books", bookDto);
@@ -177,7 +179,7 @@ public class ApiService
         return await response.Content.ReadFromJsonAsync<ApiResponse<BookDto>>();
     }
 
-    public async Task<ApiResponse<List<BookDto>>> GetAllBooksAsync() // Yeni eklenen metod
+    public async Task<ApiResponse<List<BookDto>>> GetAllBooksAsync()
     {
         try
         {
@@ -202,6 +204,46 @@ public class ApiService
                 Data = null
             };
         }
+    }
+
+    public async Task<ApiResponse<List<BookDto>>> GetReadBooksAsync(string username, string title = "")
+    {
+        var token = await GetTokenAsync();
+        System.Diagnostics.Debug.WriteLine($"Token: {token}");
+        if (string.IsNullOrEmpty(token))
+        {
+            return new ApiResponse<List<BookDto>>
+            {
+                Success = false,
+                Message = "Oturum açılmamış. Lütfen giriş yapın.",
+                Data = null
+            };
+        }
+
+        await SetTokenAsync(token);
+
+        // BaseUrl ile mutlak URL oluştur
+        var baseUrl = _httpClient.BaseAddress?.ToString() ?? "https://10.0.2.2:7220/api/"; // Emülatör için varsayılan
+        var url = string.IsNullOrEmpty(title)
+            ? $"{baseUrl}books/read?username={Uri.EscapeDataString(username)}"
+            : $"{baseUrl}books/read?username={Uri.EscapeDataString(username)}&title={Uri.EscapeDataString(title)}";
+        System.Diagnostics.Debug.WriteLine($"Calling API: {url}");
+
+        var response = await _httpClient.GetAsync(url);
+        System.Diagnostics.Debug.WriteLine($"API Response Status: {response.StatusCode}");
+        if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        {
+            return new ApiResponse<List<BookDto>>
+            {
+                Success = false,
+                Message = "Yetkisiz erişim: Geçersiz veya eksik token.",
+                Data = null
+            };
+        }
+
+        var content = await response.Content.ReadAsStringAsync();
+        System.Diagnostics.Debug.WriteLine($"API Response Content: {content}");
+        return await response.Content.ReadFromJsonAsync<ApiResponse<List<BookDto>>>();
     }
 
     public async Task<ApiResponse<BookDto>> UpdateBookAsync(int id, BookUpdateDto bookDto)

@@ -14,5 +14,7 @@ namespace KitapTakipMauii.Models.Dtos
         public string Description { get; set; } = string.Empty;
         public int PageCount { get; set; }
         public string CoverImage { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public bool IsReading { get; set; }
     }
 }

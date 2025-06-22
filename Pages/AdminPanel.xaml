@@ -2,36 +2,135 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:KitapTakipMauii.ViewModels"
+             xmlns:converters="clr-namespace:KitapTakipMauii.Converters"
              x:Class="KitapTakipMauii.Pages.AdminPanel"
              x:Name="AdminPaneli"
-             Title="Admin Paneli">
+             Title="Admin Paneli"
+             BackgroundColor="#F5F5F5">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:NullToBooleanConverter x:Key="NullToBooleanConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Çıkış Yap" Command="{Binding LogoutCommand}" />
     </ContentPage.ToolbarItems>
 
-    <StackLayout Padding="20">
-        <Label Text="Admin Paneli" FontSize="24" HorizontalOptions="Center" Margin="0,0,0,20" />
+    <StackLayout Padding="20" Spacing="15">
+        <!-- Title -->
+        <Label Text="Admin Paneli"
+               FontSize="24"
+               FontAttributes="Bold"
+               TextColor="#333333"
+               HorizontalOptions="Center"
+               Margin="0,0,0,20" />
 
+        <!-- Radio Buttons -->
         <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
-            <RadioButton Content="Kullanıcılar" GroupName="ListType" IsChecked="{Binding IsUsersSelected}" />
-            <RadioButton Content="Kitaplar" GroupName="ListType" IsChecked="{Binding IsBooksSelected}" />
+            <RadioButton Content="Kullanıcılar"
+                         GroupName="ListType"
+                         IsChecked="{Binding IsUsersSelected}"
+                         TextColor="#333333"
+                         FontSize="16" />
+            <RadioButton Content="Kitaplar"
+                         GroupName="ListType"
+                         IsChecked="{Binding IsBooksSelected}"
+                         TextColor="#333333"
+                         FontSize="16" />
         </HorizontalStackLayout>
 
-        <CollectionView ItemsSource="{Binding CurrentItems}" Margin="0,20,0,0">
+        <!-- CollectionView -->
+        <CollectionView ItemsSource="{Binding CurrentItems}"
+                        Margin="0,20,0,0"
+                        HeightRequest="400"
+                        EmptyView="Liste boş. Kullanıcı veya kitap bulunamadı."
+                        EmptyViewTemplate="{StaticResource EmptyViewTemplate}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Padding="10" Margin="5" ColumnDefinitions="2*,2*,Auto" RowDefinitions="Auto" BackgroundColor="#f2f2f2" >
-                        <Label Text="{Binding Title}" Grid.Column="0" VerticalOptions="Center" FontAttributes="Bold"/>
-                        <Label Text="{Binding SubTitle}" Grid.Column="1" VerticalOptions="Center"/>
-                        <Button Text="Sil" 
-                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:AdminPanelViewModel}}, Path=DeleteItemCommand}"
-                        CommandParameter="{Binding}" 
-                        BackgroundColor="Red" 
-                        TextColor="White"
-                        Grid.Column="2"
-                        WidthRequest="60"/>
-                    </Grid>
+                    <Frame Padding="10"
+                           Margin="0,5"
+                           CornerRadius="10"
+                           BackgroundColor="White"
+                           HasShadow="True">
+                        <Grid ColumnDefinitions="*,*,Auto"
+                              RowDefinitions="Auto,Auto,Auto"
+                              Padding="10">
+                            <!-- Title and SubTitle -->
+                            <Label Grid.Row="0"
+                                   Grid.Column="0"
+                                   Text="{Binding Title}"
+                                   TextColor="#333333"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   VerticalOptions="Center"
+                                   LineBreakMode="TailTruncation" />
+                            <Label Grid.Row="0"
+                                   Grid.Column="1"
+                                   Text="{Binding SubTitle}"
+                                   TextColor="#666666"
+                                   FontSize="14"
+                                   VerticalOptions="Center"
+                                   LineBreakMode="TailTruncation" />
+
+                            <!-- CreatedDate (for books only) -->
+                            <Label Grid.Row="1"
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="2"
+                                   Text="{Binding CreatedDate, StringFormat='Eklenme Tarihi: {0:dd/MM/yyyy HH:mm}'}"
+                                   TextColor="#666666"
+                                   FontSize="12"
+                                   VerticalOptions="Center"
+                                   IsVisible="False">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding IsUser}"
+                                                 Value="False">
+                                        <Setter Property="IsVisible" Value="True" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+
+                            <!-- UpdatedDate (for books only) -->
+                            <Label Grid.Row="2"
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="2"
+                                   Text="{Binding UpdatedDate, StringFormat='Güncelleme Tarihi: {0:dd/MM/yyyy HH:mm}'}"
+                                   TextColor="#666666"
+                                   FontSize="12"
+                                   VerticalOptions="Center"
+                                   IsVisible="False">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding IsUser}"
+                                                 Value="False">
+                                        <Setter Property="IsVisible" Value="True" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding UpdatedDate, Converter={StaticResource NullToBooleanConverter}}"
+                                                 Value="False">
+                                        <Setter Property="IsVisible" Value="False" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+
+                            <!-- Delete Button -->
+                            <Button Grid.Row="0"
+                                    Grid.RowSpan="3"
+                                    Grid.Column="2"
+                                    Text="Sil"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:AdminPanelViewModel}}, Path=DeleteItemCommand}"
+                                    CommandParameter="{Binding}"
+                                    BackgroundColor="#D32F2F"
+                                    TextColor="White"
+                                    FontSize="14"
+                                    CornerRadius="5"
+                                    WidthRequest="60"
+                                    HeightRequest="35"
+                                    VerticalOptions="Center" />
+                        </Grid>
+                    </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
